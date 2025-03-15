@@ -1,0 +1,39 @@
+import tkinter as tk
+
+class TrafficLightApp:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("霹靂燈")
+
+        # 設置畫布
+        self.canvas = tk.Canvas(self.root, width=300, height=200, bg="black")
+        self.canvas.pack()
+
+        # 燈的圓形區域
+        self.red_light = self.canvas.create_oval(50, 50, 150, 150, fill="gray")
+        self.yellow_light = self.canvas.create_oval(100, 50, 200, 150, fill="gray")
+        self.green_light = self.canvas.create_oval(150, 50, 250, 150, fill="gray")
+
+        # 控制紅燈移動的變數
+        self.direction = 1  # 1表示右移，-1表示左移
+
+        # 設定更新頻率，並啟動定時器
+        self.update_lights()
+
+    def update_lights(self):
+        # 讓紅燈左右移動
+        self.canvas.move(self.red_light, self.direction * 5, 0)
+
+        # 檢查紅燈是否碰到邊界
+        coords = self.canvas.coords(self.red_light)
+        if coords[2] >= 300 or coords[0] <= 0:
+            self.direction *= -1  # 改變移動方向
+
+        # 每 50 毫秒更新一次
+        self.root.after(50, self.update_lights)
+
+# 主程式
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = TrafficLightApp(root)
+    root.mainloop()
